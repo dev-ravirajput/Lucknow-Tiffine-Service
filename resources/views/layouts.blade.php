@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
 
     <!-- CSS here -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -23,6 +23,11 @@
     <link rel="stylesheet" href="assets/css/nice-select.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
+<style>
+    .logo img{
+        height: 100px;
+    }
+</style>
 <body>
     <!--? Preloader Start -->
     <div id="preloader-active">
@@ -30,7 +35,7 @@
             <div class="preloader-inner position-relative">
                 <div class="preloader-circle"></div>
                 <div class="preloader-img pere-text">
-                    <img src="assets/img/logo/logo.png" alt="">
+                    <img src="assets/img/logo/transTestyGo.png" alt="">
                 </div>
             </div>
         </div>
@@ -45,7 +50,7 @@
                             <!-- Logo -->
                             <div class="col-xl-2 col-lg-2 col-md-1">
                                 <div class="logo">
-                                    <a href="{{ route('home') }}"><img src="assets/img/logo/logo.png" alt=""></a>
+                                    <a href="{{ route('home') }}"><img src="assets/img/logo/transTestyGo.png" alt=""></a>
                                 </div>
                             </div>
                             <div class="col-xl-10 col-lg-10 col-md-10">
@@ -100,7 +105,7 @@
                             <div class="single-footer-caption mb-50">
                                 <!-- logo -->
                                 <div class="footer-logo">
-                                    <a href="{{ route('home') }}"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
+                                    <a href="{{ route('home') }}"><img src="assets/img/logo/transTestyGo.png" alt="" height="100px"></a>
                                 </div>
                             </div>
                         </div>
