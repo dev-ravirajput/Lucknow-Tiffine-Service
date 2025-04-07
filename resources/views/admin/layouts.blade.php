@@ -128,14 +128,14 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active">
-              <a href="index.html" class="menu-link">
+            <li class="menu-item {{ request()->is('admin/dashboard') ? 'active' : '' }}">
+              <a href="{{ route('admin.dashboard') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
 
-            <li class="menu-item ">
+            <li class="menu-item {{ request()->is('admin/create-kitchens') ? 'active' : '' }}">
               <a href="{{ route('admin.kitchens') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-store"></i>
                 <div data-i18n="Analytics">Kitchens</div>
@@ -143,16 +143,16 @@
             </li>
 
             <!-- Layouts -->
-            <li class="menu-item">
+            <li class="menu-item {{ request()->is('admin/avatars') ? 'open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
-                <div data-i18n="Layouts">Layouts</div>
+                <div data-i18n="Layouts">Addons</div>
               </a>
 
               <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="layouts-without-menu.html" class="menu-link">
-                    <div data-i18n="Without menu">Without menu</div>
+                <li class="menu-item {{ request()->is('admin/avatars') ? 'active' : '' }}">
+                  <a href="{{ route('admin.avatars') }}" class="menu-link">
+                    <div data-i18n="Without menu">Avtars</div>
                   </a>
                 </li>
                 <li class="menu-item">
