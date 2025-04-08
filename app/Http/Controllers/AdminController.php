@@ -17,7 +17,8 @@ class AdminController extends Controller
 
     public function kitchens()
     {
-        return view('admin.kitchens.index');
+        $kitchens = Kitchen::latest()->paginate('5');
+        return view('admin.kitchens.index', compact('kitchens'));
     }
 
     public function create_kitchens()
@@ -45,7 +46,7 @@ class AdminController extends Controller
             'owner_name' => 'required|string|max:255',
             'kitchen_name' => 'required|string|max:255',
             'email' => 'required|unique:kitchens,email',
-            'phone' => 'required|numeric|digits:10',
+            'phone' => 'required',
             'sqft' => 'required|integer',
             'status' => 'required|in:pending,active,draft',
             'type' => 'required|in:veg,nonveg,both',
@@ -74,7 +75,7 @@ class AdminController extends Controller
                    //dd($email);
 
             // Create the kitchen
-            Kitchen::create([
+            $kitchen =Kitchen::create([
                 'owner_name' => $request->owner_name,
                 'kitchen_name' => $request->kitchen_name,
                 'email' => $email,
@@ -87,6 +88,8 @@ class AdminController extends Controller
                 'coordinates' => $request->coordinates,
                 'featured_img' => $avatar->avatar
             ]);
+
+           // print_r($kitchen); die();
 
             return redirect()->route('admin.kitchens')
                 ->with('success', 'Kitchen created successfully!');
