@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('kitchen_name');
             $table->string('email');
             $table->integer('sqft');
-            $table->integer('contact_no');
+            $table->bigInteger('contact_no');
             $table->string('status')->default('pending');
             $table->string('type')->default('veg');
             $table->string('rating')->default('3');

@@ -1,93 +1,97 @@
 @extends('admin.layouts')
 @section('content')
-        <!-- Layout container -->
-        <div class="layout-page">
-          <!-- Content wrapper -->
-          <div class="content-wrapper">
-            <!-- Content -->
-
-            <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Kitchens /</span> Available Kitchens</h4>
-                            <!-- Display Success/Error Messages -->
-             @if(session('success'))
-              <div class="alert alert-success alert-dismissible mb-4" role="alert">
+<!-- Layout container -->
+<div class="layout-page">
+    <!-- Content wrapper -->
+    <div class="content-wrapper">
+        <!-- Content -->
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Kitchens /</span> Available Kitchens</h4>
+            
+            <!-- Display Success/Error Messages -->
+            @if(session('success'))
+            <div class="alert alert-success alert-dismissible mb-4" role="alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-              @endif
+            </div>
+            @endif
 
-              @if(session('error'))
-              <div class="alert alert-danger alert-dismissible mb-4" role="alert">
+            @if(session('error'))
+            <div class="alert alert-danger alert-dismissible mb-4" role="alert">
                 {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-              @endif
+            </div>
+            @endif
 
-              <!-- Responsive Table -->
-              <div class="card">
-              <div class="card-header d-flex justify-content-between align-items-center">
+            <!-- Responsive Table -->
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Available Kitchens</h5>
                     <a href="{{ route('admin.create.kitchens') }}" class="btn btn-primary">Add Kitchen</a>
                 </div>
                 <div class="table-responsive text-nowrap">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr class="text-nowrap">
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Owner Name</th>
-                        <th>Contact No.</th>
-                        <th>Email Address</th>
-                        <th>Status</th>
-                        <th>Rating</th>
-                        <th>Sqft</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach($kitchens as $k)
-                      <tr>
-                        <th scope="row">{{ ($kitchens->currentPage() - 1) * $kitchens->perPage() + $loop->iteration }}</th>
-                        <td>{{ $k->kitchen_name }}</td>
-                        <td style="text-transform: capitalize;">{{ $k->type }}</td>
-                        <td>{{ $k->owner_name }}</td>
-                        <td>{{ $k->contact_no }}</td>
-                        <td>{{ $k->email }}</td>
-                        <td>
-                          @if($k->status == 'pending')
-                          <span class="badge bg-label-warning me-1">{{ $k->status }}</span>
-                          @elseif($k->status == 'active')
-                          <span class="badge bg-label-success me-1">{{ $k->status }}</span>
-                          @else
-                          <span class="badge bg-label-primary me-1">{{ $k->status }}</span>
-                          @endif
-                        </td>
-                        <td>{{ $k->rating }} <i class='bx bxs-star'></i></td>
-                        <td>{{ $k->sqft }}</td>
-                        <td>
-                          <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                              >
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-trash me-1"></i> Delete</a
-                              >
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      @empty
-                      <tr>
-                        <td colspan="5" class="text-center py-4">No avatars found. <a href="{{ route('admin.create.kitchens') }}">Create one</a></td>
-                      </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-nowrap">
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Owner Name</th>
+                                <th>Contact No.</th>
+                                <th>Email Address</th>
+                                <th>Status</th>
+                                <th>Rating</th>
+                                <th>Sqft</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($kitchens as $k)
+                            <tr>
+                                <th scope="row">{{ ($kitchens->currentPage() - 1) * $kitchens->perPage() + $loop->iteration }}</th>
+                                <td>{{ $k->kitchen_name }}</td>
+                                <td style="text-transform: capitalize;">{{ $k->type }}</td>
+                                <td>{{ $k->owner_name }}</td>
+                                <td>{{ $k->contact_no }}</td>
+                                <td>{{ $k->email }}</td>
+                                <td>
+                                    @if($k->status == 'pending')
+                                    <span class="badge bg-label-warning me-1">{{ $k->status }}</span>
+                                    @elseif($k->status == 'active')
+                                    <span class="badge bg-label-success me-1">{{ $k->status }}</span>
+                                    @else
+                                    <span class="badge bg-label-primary me-1">{{ $k->status }}</span>
+                                    @endif
+                                </td>
+                                <td>{{ $k->rating }} <i class='bx bxs-star'></i></td>
+                                <td>{{ $k->sqft }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{ route('admin.edit.kitchens', $k->id) }}">
+                                                <i class="bx bx-edit-alt me-1"></i> Edit
+                                            </a>
+                                            <form method="POST" action="{{ route('admin.delete.kitchen', $k->id) }}" class="d-inline delete-form">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="dropdown-item delete-btn">
+                                                    <i class="bx bx-trash me-1"></i> Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="10" class="text-center py-4">No kitchens found. <a href="{{ route('admin.create.kitchens') }}">Create one</a></td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
                 <!-- Pagination -->
                 @if($kitchens->hasPages())
@@ -133,13 +137,42 @@
                 </div>
                 @endif
                 <!-- End Pagination -->
-              </div>
-              <!--/ Responsive Table -->
             </div>
-            <!-- / Content -->
-
-            <div class="content-backdrop fade"></div>
-          </div>
-          <!-- Content wrapper -->
+            <!--/ Responsive Table -->
         </div>
+        <!-- / Content -->
+
+        <div class="content-backdrop fade"></div>
+    </div>
+    <!-- Content wrapper -->
+</div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Use event delegation for dynamically loaded elements
+    document.body.addEventListener('click', function(e) {
+        if (e.target.closest('.delete-btn')) {
+            e.preventDefault();
+            const form = e.target.closest('.delete-form');
+            
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        }
+    });
+});
+</script>
+@endpush

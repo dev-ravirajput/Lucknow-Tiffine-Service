@@ -17,7 +17,7 @@ class AdminController extends Controller
 
     public function kitchens()
     {
-        $kitchens = Kitchen::latest()->paginate('5');
+        $kitchens = Kitchen::latest()->paginate('10');
         return view('admin.kitchens.index', compact('kitchens'));
     }
 
@@ -65,8 +65,6 @@ class AdminController extends Controller
         }
 
         try {
-            // Get the selected avatar
-            $avatar = Avatar::where('slug', $request->avatar)->firstOrFail();
 
             // Format the email (append domain if only prefix was entered)
             $email = str_contains($request->email, '@') 
@@ -75,7 +73,7 @@ class AdminController extends Controller
                    //dd($email);
 
             // Create the kitchen
-            $kitchen =Kitchen::create([
+            Kitchen::create([
                 'owner_name' => $request->owner_name,
                 'kitchen_name' => $request->kitchen_name,
                 'email' => $email,
@@ -86,7 +84,7 @@ class AdminController extends Controller
                 'rating' => $request->rating,
                 'location' => $request->location,
                 'coordinates' => $request->coordinates,
-                'featured_img' => $avatar->avatar
+                'featured_img' => $request->avatar
             ]);
 
            // print_r($kitchen); die();
@@ -99,6 +97,101 @@ class AdminController extends Controller
                 ->back()
                 ->withInput()
                 ->with('error', 'Error creating kitchen: ' . $e->getMessage());
+        }
+    }
+
+    public function edit_kitchens($id)
+    {
+        $avatars = Avatar::all();
+        $kitchen = Kitchen::find($id);
+        //dd($kitchen);
+        return view('admin.kitchens.edit', compact('avatars', 'kitchen'));
+    }
+
+    public function update_kitchen(Request $request, $id)
+    {
+        $messages = [
+            'avatar.required' => 'Please select a kitchen avatar',
+            'phone.digits' => 'The contact number must be 10 digits',
+            'email.unique' => 'This email is already registered',
+        ];
+    
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'avatar' => 'required|exists:avatars,slug',
+            'owner_name' => 'required|string|max:255',
+            'kitchen_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:kitchens,email,'.$id,
+            'phone' => 'required',
+            'sqft' => 'required|integer',
+            'status' => 'required|in:pending,active,draft',
+            'type' => 'required|in:veg,nonveg,both',
+            'rating' => 'required|in:1,2,3,4,5',
+            'location' => 'required|string',
+            'coordinates' => 'nullable|string'
+        ], $messages);
+    
+        // If validation fails, redirect back with errors and input
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Please correct the errors below');
+        }
+        
+        $kitchen = Kitchen::findOrFail($id);
+    
+        try {
+            // Format the email (append domain if only prefix was entered)
+            $email = str_contains($request->email, '@') 
+                   ? $request->email 
+                   : $request->email . '@gmail.com';
+    
+            // Update the kitchen
+            $kitchen->update([
+                'owner_name' => $request->owner_name,
+                'kitchen_name' => $request->kitchen_name,
+                'email' => $email,
+                'contact_no' => $request->phone,
+                'sqft' => (int) str_replace(',', '', $request->sqft),
+                'status' => $request->status,
+                'type' => $request->type,
+                'rating' => $request->rating,
+                'location' => $request->location,
+                'coordinates' => $request->coordinates,
+                'featured_img' => $request->avatar
+            ]);
+    
+            return redirect()->route('admin.kitchens')
+                ->with('success', 'Kitchen updated successfully!');
+    
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Error updating kitchen: ' . $e->getMessage());
+        }
+    }
+
+    public function delete_kitchen($id)
+    {
+        try {
+            // Find the kitchen or fail with 404
+            $kitchen = Kitchen::findOrFail($id);
+            
+            // Delete the kitchen
+            $kitchen->delete();
+            
+            // Redirect with success message
+            return redirect()->route('admin.kitchens')
+                ->with('success', 'Kitchen deleted successfully!');
+                
+        } catch (\Exception $e) {
+            // Handle any errors that occur during deletion
+            return redirect()
+                ->back()
+                ->with('error', 'Error deleting kitchen: ' . $e->getMessage());
         }
     }
 

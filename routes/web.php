@@ -23,6 +23,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/kitchens', [AdminController::class, 'kitchens'])->name('admin.kitchens');
     Route::get('/admin/create-kitchens', [AdminController::class, 'create_kitchens'])->name('admin.create.kitchens');
     Route::post('/admin/store-kitchens', [AdminController::class, 'store_kitchens'])->name('admin.store.kitchens');
+    Route::get('/admin/{id}/edit-kitchens',[AdminController::class, 'edit_kitchens'])->name('admin.edit.kitchens');
+    Route::post('/admin/{id}/update-kitchen', [AdminController::class, 'update_kitchen'])->name('admin.update.kitchen');
+    Route::delete('/admin/{id}/delete-kitchen', [AdminController::class, 'delete_kitchen'])->name('admin.delete.kitchen');
 
     Route::get('/admin/avatars', [AdminController::class, 'avatars'])->name('admin.avatars');
     Route::get('/admin/create-avatars', [AdminController::class, 'create_avatars'])->name('admin.create.avatars');
